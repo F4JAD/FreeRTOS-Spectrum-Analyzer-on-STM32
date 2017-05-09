@@ -1,0 +1,256 @@
+
+;; Function pvPortMalloc (pvPortMalloc, funcdef_no=5, decl_uid=5872, cgraph_uid=5, symbol_order=10)
+
+Removing basic block 18
+Removing basic block 19
+Removing basic block 20
+Removing basic block 21
+Removing basic block 22
+Removing basic block 23
+Removing basic block 24
+Removing basic block 25
+Removing basic block 26
+Removing basic block 27
+pvPortMalloc (size_t xWantedSize)
+{
+  uint8_t * pucAlignedHeap;
+  size_t xBlockSize;
+  struct BlockLink_t * pxIterator;
+  void * pvReturn;
+  static BaseType_t xHeapHasBeenInitialised = 0;
+  struct BlockLink_t * pxNewBlockLink;
+  struct BlockLink_t * pxPreviousBlock;
+  struct BlockLink_t * pxBlock;
+  long int xHeapHasBeenInitialised.0_11;
+  unsigned int _16;
+  unsigned int _17;
+  unsigned int _19;
+  unsigned int _21;
+  struct A_BLOCK_LINK * _22;
+  struct A_BLOCK_LINK * _23;
+  struct A_BLOCK_LINK * _25;
+  unsigned int _27;
+  unsigned int _28;
+  struct A_BLOCK_LINK * _33;
+  unsigned int _34;
+  unsigned int xFreeBytesRemaining.1_37;
+  unsigned int _38;
+  unsigned int _39;
+  long unsigned int _42;
+  long unsigned int _43;
+
+  <bb 2>:
+  # DEBUG pvReturn => 0B
+  vTaskSuspendAll ();
+  xHeapHasBeenInitialised.0_11 = xHeapHasBeenInitialised;
+  if (xHeapHasBeenInitialised.0_11 == 0)
+    goto <bb 3>;
+  else
+    goto <bb 4>;
+
+  <bb 3>:
+  _42 = (long unsigned int) &ucHeap[8];
+  _43 = _42 & 4294967288;
+  pucAlignedHeap_44 = (uint8_t *) _43;
+  # DEBUG pucAlignedHeap => pucAlignedHeap_44
+  xStart.pxNextFreeBlock = pucAlignedHeap_44;
+  xStart.xBlockSize = 0;
+  xEnd.xBlockSize = 5112;
+  xEnd.pxNextFreeBlock = 0B;
+  # DEBUG pxFirstFreeBlock => pucAlignedHeap_44
+  MEM[(struct BlockLink_t *)pucAlignedHeap_44].xBlockSize = 5112;
+  MEM[(struct BlockLink_t *)pucAlignedHeap_44].pxNextFreeBlock = &xEnd;
+  # DEBUG pucAlignedHeap => NULL
+  xHeapHasBeenInitialised = 1;
+
+  <bb 4>:
+  if (xWantedSize_14(D) != 0)
+    goto <bb 5>;
+  else
+    goto <bb 17>;
+
+  <bb 5>:
+  xWantedSize_15 = xWantedSize_14(D) + 8;
+  # DEBUG xWantedSize => xWantedSize_15
+  _16 = xWantedSize_15 & 7;
+  if (_16 != 0)
+    goto <bb 6>;
+  else
+    goto <bb 7>;
+
+  <bb 6>:
+  _17 = xWantedSize_15 & 4294967288;
+  xWantedSize_18 = _17 + 8;
+  # DEBUG xWantedSize => xWantedSize_18
+
+  <bb 7>:
+  # xWantedSize_1 = PHI <xWantedSize_18(6), xWantedSize_15(5)>
+  # DEBUG xWantedSize => xWantedSize_1
+  _19 = xWantedSize_1 + 4294967295;
+  if (_19 <= 5110)
+    goto <bb 8>;
+  else
+    goto <bb 17>;
+
+  <bb 8>:
+  # DEBUG pxPreviousBlock => &xStart
+  pxBlock_20 = xStart.pxNextFreeBlock;
+  # DEBUG pxBlock => pxBlock_20
+
+  <bb 9>:
+  # pxBlock_2 = PHI <pxBlock_20(8), _22(10)>
+  # pxPreviousBlock_3 = PHI <&xStart(8), pxBlock_2(10)>
+  # DEBUG pxPreviousBlock => pxPreviousBlock_3
+  # DEBUG pxBlock => pxBlock_2
+  _21 = pxBlock_2->xBlockSize;
+  if (xWantedSize_1 > _21)
+    goto <bb 10>;
+  else
+    goto <bb 11>;
+
+  <bb 10>:
+  _22 = pxBlock_2->pxNextFreeBlock;
+  if (_22 != 0B)
+    goto <bb 9>;
+  else
+    goto <bb 11>;
+
+  <bb 11>:
+  if (pxBlock_2 != &xEnd)
+    goto <bb 12>;
+  else
+    goto <bb 17>;
+
+  <bb 12>:
+  _23 = pxPreviousBlock_3->pxNextFreeBlock;
+  pvReturn_24 = _23 + 8;
+  # DEBUG pvReturn => pvReturn_24
+  _25 = pxBlock_2->pxNextFreeBlock;
+  pxPreviousBlock_3->pxNextFreeBlock = _25;
+  _27 = pxBlock_2->xBlockSize;
+  _28 = _27 - xWantedSize_1;
+  if (_28 > 16)
+    goto <bb 13>;
+  else
+    goto <bb 16>;
+
+  <bb 13>:
+  pxNewBlockLink_29 = pxBlock_2 + xWantedSize_1;
+  # DEBUG pxNewBlockLink => pxNewBlockLink_29
+  pxNewBlockLink_29->xBlockSize = _28;
+  pxBlock_2->xBlockSize = xWantedSize_1;
+  xBlockSize_32 = pxNewBlockLink_29->xBlockSize;
+  # DEBUG xBlockSize => xBlockSize_32
+  # DEBUG pxIterator => &xStart
+
+  <bb 14>:
+  # pxIterator_5 = PHI <&xStart(13), _33(14)>
+  # DEBUG pxIterator => pxIterator_5
+  _33 = pxIterator_5->pxNextFreeBlock;
+  _34 = _33->xBlockSize;
+  if (xBlockSize_32 > _34)
+    goto <bb 14>;
+  else
+    goto <bb 15>;
+
+  <bb 15>:
+  pxNewBlockLink_29->pxNextFreeBlock = _33;
+  pxIterator_5->pxNextFreeBlock = pxNewBlockLink_29;
+
+  <bb 16>:
+  xFreeBytesRemaining.1_37 = xFreeBytesRemaining;
+  _38 = pxBlock_2->xBlockSize;
+  _39 = xFreeBytesRemaining.1_37 - _38;
+  xFreeBytesRemaining = _39;
+
+  <bb 17>:
+  # pvReturn_4 = PHI <0B(7), 0B(11), pvReturn_24(16), 0B(4)>
+  # DEBUG pvReturn => pvReturn_4
+  xTaskResumeAll ();
+  return pvReturn_4;
+
+}
+
+
+
+;; Function vPortFree (vPortFree, funcdef_no=6, decl_uid=5874, cgraph_uid=6, symbol_order=11)
+
+Removing basic block 7
+Removing basic block 8
+vPortFree (void * pv)
+{
+  size_t xBlockSize;
+  struct BlockLink_t * pxIterator;
+  uint8_t * puc;
+  struct A_BLOCK_LINK * _8;
+  unsigned int _9;
+  unsigned int _12;
+  unsigned int xFreeBytesRemaining.2_13;
+  unsigned int _14;
+
+  <bb 2>:
+  # DEBUG puc => pv_3(D)
+  if (pv_3(D) != 0B)
+    goto <bb 3>;
+  else
+    goto <bb 6>;
+
+  <bb 3>:
+  puc_5 = pv_3(D) + 4294967288;
+  # DEBUG puc => puc_5
+  # DEBUG pxLink => puc_5
+  vTaskSuspendAll ();
+  xBlockSize_7 = MEM[(struct BlockLink_t *)pv_3(D) + 4294967288B].xBlockSize;
+  # DEBUG xBlockSize => xBlockSize_7
+  # DEBUG pxIterator => &xStart
+
+  <bb 4>:
+  # pxIterator_1 = PHI <&xStart(3), _8(4)>
+  # DEBUG pxIterator => pxIterator_1
+  _8 = pxIterator_1->pxNextFreeBlock;
+  _9 = _8->xBlockSize;
+  if (xBlockSize_7 > _9)
+    goto <bb 4>;
+  else
+    goto <bb 5>;
+
+  <bb 5>:
+  MEM[(struct BlockLink_t *)pv_3(D) + 4294967288B].pxNextFreeBlock = _8;
+  pxIterator_1->pxNextFreeBlock = puc_5;
+  _12 = MEM[(struct BlockLink_t *)pv_3(D) + 4294967288B].xBlockSize;
+  xFreeBytesRemaining.2_13 = xFreeBytesRemaining;
+  _14 = _12 + xFreeBytesRemaining.2_13;
+  xFreeBytesRemaining = _14;
+  xTaskResumeAll ();
+
+  <bb 6>:
+  return;
+
+}
+
+
+
+;; Function xPortGetFreeHeapSize (xPortGetFreeHeapSize, funcdef_no=7, decl_uid=5878, cgraph_uid=7, symbol_order=12)
+
+xPortGetFreeHeapSize ()
+{
+  size_t _2;
+
+  <bb 2>:
+  _2 = xFreeBytesRemaining;
+  return _2;
+
+}
+
+
+
+;; Function vPortInitialiseBlocks (vPortInitialiseBlocks, funcdef_no=8, decl_uid=5876, cgraph_uid=8, symbol_order=13)
+
+vPortInitialiseBlocks ()
+{
+  <bb 2>:
+  return;
+
+}
+
+
